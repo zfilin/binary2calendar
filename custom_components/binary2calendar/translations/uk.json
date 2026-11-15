@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Додати Binary2Calendar",
+        "description": "Виберіть бінарний сенсор або input_boolean.",
+        "data": {
+          "entity_id": "Entity",
+          "title": "Назва календаря",
+          "trigger_state": "Стан для подій",
+          "update_interval": "Інтервал оновлення (хв)",
+          "history_days": "Історія за скільки днів"
+        }
+      },
+      "init": {
+        "title": "Редагувати Binary2Calendar",
+        "description": "Редагування налаштувань календаря.",
+        "data": {
+          "entity_id": "Entity",
+          "title": "Назва календаря",
+          "trigger_state": "Стан для подій",
+          "update_interval": "Інтервал оновлення (хв)",
+          "history_days": "Історія за скільки днів"
+        }
+      }
+    },
+    "error": {
+      "invalid_entity": "Невірний entity_id. Виберіть бінарний сенсор або input_boolean."
+    }
+  },
+  "entity": {
+    "binary2calendar": {
+      "title": "Календар"
+    }
+  }
+}
