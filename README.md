@@ -82,3 +82,9 @@ Binary2Calendar polls the specified binary entity at the configured interval. Wh
 
 - Documentation: [GitHub Wiki](https://github.com/zfilin/binary2calendar)
 - Issues: [Issue Tracker](https://github.com/zfilin/binary2calendar/issues)
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2026 Green Owl
