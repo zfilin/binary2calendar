@@ -28,6 +28,21 @@
       "invalid_entity": "Invalid entity. Choose a binary sensor or input_boolean."
     }
   },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Edit Binary2Calendar",
+        "description": "Edit the calendar settings.",
+        "data": {
+          "entity_id": "Entity",
+          "title": "Calendar title",
+          "trigger_state": "Trigger state",
+          "update_interval": "Update interval (minutes)",
+          "history_days": "History days"
+        }
+      }
+    }
+  },
   "entity": {
     "binary2calendar": {
       "title": "Calendar"
