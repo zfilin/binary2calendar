@@ -1,0 +1,36 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Binary2Calendar hinzufügen",
+        "description": "Wählen Sie einen binären Sensor oder input_boolean.",
+        "data": {
+          "entity_id": "Entität",
+          "title": "Kalentertitel",
+          "trigger_state": "Auslösezustand",
+          "update_interval": "Aktualisierungsintervall (Minuten)",
+          "history_days": "Historie-Tage"
+        }
+      },
+      "init": {
+        "title": "Binary2Calendar bearbeiten",
+        "description": "Kalendereeinstellungen bearbeiten.",
+        "data": {
+          "entity_id": "Entität",
+          "title": "Kalentertitel",
+          "trigger_state": "Auslösezustand",
+          "update_interval": "Aktualisierungsintervall (Minuten)",
+          "history_days": "Historie-Tage"
+        }
+      }
+    },
+    "error": {
+      "invalid_entity": "Ungültige Entität. Wählen Sie einen binären Sensor oder input_boolean."
+    }
+  },
+  "entity": {
+    "binary2calendar": {
+      "title": "Kalender"
+    }
+  }
+}
