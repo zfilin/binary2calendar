@@ -1,7 +1,10 @@
 """Config flow for Binary2Calendar integration."""
+import logging
+
 import voluptuous as vol
 
 from homeassistant import config_entries
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er, selector
 
@@ -12,11 +15,12 @@ from .const import (
     CONF_TRIGGER_STATE,
     CONF_UPDATE_INTERVAL,
     CONF_HISTORY_DAYS,
-    CONF_ICON,
     DEFAULT_HISTORY_DAYS,
     DEFAULT_UPDATE_INTERVAL,
     DEFAULT_TRIGGER_STATE,
 )
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _build_schema(defaults: dict) -> vol.Schema:
@@ -31,9 +35,7 @@ def _build_schema(defaults: dict) -> vol.Schema:
                     domain=["binary_sensor", "input_boolean"]
                 )
             ),
-            vol.Optional(
-                CONF_TITLE, default=defaults.get(CONF_TITLE, "")
-            ): str,
+            vol.Optional(CONF_TITLE, default=defaults.get(CONF_TITLE, "")): str,
             vol.Optional(
                 CONF_TRIGGER_STATE,
                 default=defaults.get(CONF_TRIGGER_STATE, DEFAULT_TRIGGER_STATE),
@@ -60,7 +62,7 @@ def _validate_entity(hass: HomeAssistant, entity_id: str) -> bool:
 class ConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     """Handles the config flow for one calendar."""
 
-    async def async_step_user(self, user_input=None):
+    async def async_step_user(self, user_input: dict | None = None):
         """Define the user flow."""
         errors = {}
         if user_input is not None:
@@ -80,7 +82,7 @@ class ConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     @staticmethod
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(config_entry: ConfigEntry) -> "OptionsFlowHandler":
         """Return the options flow for this handler."""
         return OptionsFlowHandler(config_entry)
 
@@ -88,10 +90,10 @@ class ConfigFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 class OptionsFlowHandler(config_entries.OptionsFlow):
     """Allow editing the settings of an existing calendar."""
 
-    def __init__(self, config_entry) -> None:
+    def __init__(self, config_entry: ConfigEntry) -> None:
         self._entry = config_entry
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(self, user_input: dict | None = None):
         """Manage the calendar settings."""
         errors = {}
         if user_input is not None:

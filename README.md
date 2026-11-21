@@ -41,16 +41,7 @@ The integration monitors binary entities and creates calendar entries when the e
 
 ## Configuration
 
-Configuration is done through the Home Assistant UI config flow. You can also add entries manually in `configuration.yaml`:
-
-```yaml
-binary2calendar:
-  - entity_id: binary_sensor.example
-    title: Calendar title
-    trigger_state: "on"
-    update_interval: 5
-    history_days: 30
-```
+Configuration is done through the Home Assistant UI config flow. Add a new integration and select the binary sensor or input_boolean entity you want to track.
 
 ### Options
 

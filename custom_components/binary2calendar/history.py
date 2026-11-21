@@ -1,7 +1,6 @@
-import inspect
 import logging
 from datetime import datetime, timedelta
-from functools import partial
+from typing import Any
 
 from homeassistant.core import HomeAssistant
 from homeassistant.util import dt as dt_util
@@ -11,7 +10,7 @@ from homeassistant.components.recorder import history as recorder_history
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_get_binary_history(hass: HomeAssistant, entity_id: str, days: int):
+async def async_get_binary_history(hass: HomeAssistant, entity_id: str, days: int) -> list[dict]:
     """
     Return a list of history records (state changes) for the last `days` days
     for the specified binary entity.
@@ -26,32 +25,28 @@ async def async_get_binary_history(hass: HomeAssistant, entity_id: str, days: in
 
         func = getattr(recorder_history, "state_changes_during_period", None)
         if func is not None:
-            # Build only the optional arguments supported by this HA version.
-            params = inspect.signature(func).parameters
-            kwargs = {}
-            if "no_attributes" in params:
-                kwargs["no_attributes"] = False
-            if "descending" in params:
-                kwargs["descending"] = False
-            if "limit" in params:
-                kwargs["limit"] = None
-            if "include_start_time_state" in params:
-                kwargs["include_start_time_state"] = True
-
-            call = partial(func, hass, start_time, now, entity_id, **kwargs)
-            result = await instance.async_add_executor_job(call)
+            # HA 2022.5+ stable API
+            result = await instance.async_add_executor_job(
+                func,
+                hass,
+                start_time,
+                now,
+                entity_id,
+                no_attributes=False,
+                descending=False,
+                limit=None,
+                include_start_time_state=True,
+            )
         else:
             func = getattr(recorder_history, "get_significant_states", None)
             if func is None:
-                _LOGGER.error(
-                    "binary2calendar: no history function found in recorder"
-                )
+                _LOGGER.error("binary2calendar: no history function found in recorder")
                 return []
             result = await instance.async_add_executor_job(
                 func, hass, start_time, now, [entity_id]
             )
 
-        states = []
+        states: list[Any] = []
         if isinstance(result, dict):
             states = result.get(entity_id, [])
         elif isinstance(result, list):
@@ -77,11 +72,6 @@ async def async_get_binary_history(hass: HomeAssistant, entity_id: str, days: in
                 }
             )
         return events
-    except Exception as exc:
-        _LOGGER.error(
-            "binary2calendar: error retrieving history for %s: %s",
-            entity_id,
-            exc,
-            exc_info=True,
-        )
+    except Exception:
+        _LOGGER.exception("binary2calendar: error retrieving history for %s", entity_id)
         return []
